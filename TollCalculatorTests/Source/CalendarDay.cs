@@ -15,8 +15,7 @@ public struct CalendarDay
 
 	public bool IsTollFree()
 	{
-		var date = new DateTime(year, month, day);
-		if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday) return true;
+		if (IsWeekend()) return true;
 
 		if (year == 2013)
 		{
@@ -33,5 +32,11 @@ public struct CalendarDay
 			}
 		}
 		return false;
+	}
+
+	bool IsWeekend()
+	{
+		var dayOfWeek = new DateTime(year, month, day).DayOfWeek;
+		return dayOfWeek == DayOfWeek.Saturday || dayOfWeek == DayOfWeek.Sunday;
 	}
 }
