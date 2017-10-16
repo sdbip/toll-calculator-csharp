@@ -33,6 +33,7 @@
   <ItemGroup>
     <Compile Include="Source\TollCalculator.cs" />
     <Compile Include="Tests\TollCalculatorTests.cs" />
+    <Compile Include="Source\VehicleType.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -12,7 +12,7 @@ public class TollCalculator
      * @return - the total toll fee for that day
      */
 
-	public int GetTollFee(TollFreeVehicles vehicle, DateTime[] dates)
+	public int GetTollFee(VehicleType vehicle, DateTime[] dates)
     {
         DateTime intervalStart = dates[0];
         int totalFee = 0;
@@ -39,12 +39,12 @@ public class TollCalculator
         return totalFee;
     }
 
-	private bool IsTollFreeVehicle(TollFreeVehicles vehicle)
+	private bool IsTollFreeVehicle(VehicleType vehicle)
     {
-		return vehicle != TollFreeVehicles.Car;
+		return vehicle != VehicleType.Car;
     }
 
-	public int GetTollFee(DateTime date, TollFreeVehicles vehicle)
+	public int GetTollFee(DateTime date, VehicleType vehicle)
     {
         if (IsTollFreeDate(date) || IsTollFreeVehicle(vehicle)) return 0;
 
@@ -86,16 +86,5 @@ public class TollCalculator
             }
         }
         return false;
-    }
-
-    public enum TollFreeVehicles
-    {
-        Motorbike = 0,
-        Tractor = 1,
-        Emergency = 2,
-        Diplomat = 3,
-        Foreign = 4,
-        Military = 5,
-		Car = 6
     }
 }
