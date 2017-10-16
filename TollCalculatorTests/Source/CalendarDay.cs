@@ -103,7 +103,7 @@ public struct CalendarDay
 		}
 	}
 
-	public bool IsMidsummerEve
+	bool IsMidsummerEve
 	{
 		get
 		{
