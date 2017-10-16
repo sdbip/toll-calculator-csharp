@@ -8,9 +8,9 @@ namespace TollFeeCalculator
 {
     public class Car : Vehicle
     {
-        public String GetVehicleType()
+		public TollCalculator.TollFreeVehicles? GetVehicleType()
         {
-            return "Car";
+			return null;
         }
     }
 }

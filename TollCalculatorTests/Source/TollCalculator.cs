@@ -43,13 +43,7 @@ public class TollCalculator
     private bool IsTollFreeVehicle(Vehicle vehicle)
     {
         if (vehicle == null) return false;
-        String vehicleType = vehicle.GetVehicleType();
-        return vehicleType.Equals(TollFreeVehicles.Motorbike.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Tractor.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Emergency.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Diplomat.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Foreign.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Military.ToString());
+		return vehicle.GetVehicleType() != null;
     }
 
     public int GetTollFee(DateTime date, Vehicle vehicle)
@@ -96,7 +90,7 @@ public class TollCalculator
         return false;
     }
 
-    private enum TollFreeVehicles
+    public enum TollFreeVehicles
     {
         Motorbike = 0,
         Tractor = 1,
