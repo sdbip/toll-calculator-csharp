@@ -33,25 +33,13 @@ public struct CalendarDay
 				return true;
 			}
 
-			if (year == 2013)
+			if (IsMidsummerEve) return true;
+			if (month == EasterDay(year).month && (day == EasterDay(year).day - 2 || day == EasterDay(year).day - 3) ||
+			    month == AscensionDay(year).month && (day == AscensionDay(year).day || day == AscensionDay(year).day - 1))
 			{
-				if (month == 3 && (day == 28 || day == 29) || // Easter
-				    month == 5 && (day == 8 || day == 9) ||   // the Ascension
-				    month == 6 && day == 21)                  // Midsummer
-				{
-					return true;
-				}
+				return true;
 			}
-			else // TODO: assumes 2017
-			{
-				if (month == 4 && (day == 13 || day == 14) || // Easter
-					month == 5 && (day == 24 || day == 25) || // the Ascension
-					month == 6 && day == 23)                  // Midsummer
-				{
-					return true;
-				}
 
-			}
 			return false;
 		}
 	}
@@ -63,5 +51,72 @@ public struct CalendarDay
 			var dayOfWeek = new DateTime(year, month, day).DayOfWeek;
 			return dayOfWeek == DayOfWeek.Saturday || dayOfWeek == DayOfWeek.Sunday;
 		}
+	}
+
+	static CalendarDay AscensionDay(int year)
+	{
+		// The Ascension of Christ occurs on Thursday 40 days after Easter Eve.
+		var easterDay = EasterDay(year);
+		var ascension = easterDay;
+		ascension.day += 39;
+
+		if (ascension.month == 3 && ascension.day > 31) {
+			ascension.day -= 31;
+			ascension.month = 4;
+		}
+
+		if (ascension.month == 4 && ascension.day > 30)
+		{
+			ascension.day -= 30;
+			ascension.month = 5;
+		}
+
+		return ascension;
+	}
+
+	static CalendarDay EasterDay(int year)
+	{
+		// Easter occurs on the first Sunday after the first full moon
+		// after the spring equinox.
+		// Algorithm by Carl Friedrich Gauss
+		// https://sv.wikipedia.org/wiki/Påskdagen
+
+		int a = year % 19;
+		int b = year % 4;
+		int c = year % 7;
+		int d = (19 * a + 24) % 30;
+		int e = (2 * b + 4 * c + 6 * d + 5) % 7;
+
+		if (d + e > 9)
+		{
+			int easterDay = d + e - 9;
+			if (easterDay == 26) easterDay = 19;
+			if (easterDay == 25 && d == 28 && e == 6) easterDay = 18;
+			return new CalendarDay(year, 4, easterDay);
+		}
+		else
+		{
+			return new CalendarDay(year, 3, 22 + d + e);
+		}
+	}
+
+	public bool IsMidsummerEve
+	{
+		get
+		{
+			// According to Wikipedia, Swedish midsummer eve is always
+			// celebrated on the Friday that occurs between 19-25 of June.
+			if (month != 6 || day < 19 || day > 25)
+			{
+				return false;
+			}
+
+			return new DateTime(year, month, day).DayOfWeek == DayOfWeek.Friday;
+		}
+	}
+
+	public override string ToString()
+	{
+		return $"{year}-{month}-{day}";
 	}
 }
