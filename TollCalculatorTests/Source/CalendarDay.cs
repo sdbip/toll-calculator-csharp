@@ -34,11 +34,14 @@ public struct CalendarDay
 			}
 
 			if (IsMidsummerEve) return true;
-			if (month == EasterDay(year).month && (day == EasterDay(year).day - 2 || day == EasterDay(year).day - 3) ||
-			    month == AscensionDay(year).month && (day == AscensionDay(year).day || day == AscensionDay(year).day - 1))
-			{
+
+			var easter = EasterDay(year);
+			if (month == easter.month && (day == easter.day - 2 || day == easter.day - 3))
 				return true;
-			}
+
+			var ascensionDay = AscensionDay(year);
+			if (month == ascensionDay.month && (day == ascensionDay.day || day == ascensionDay.day - 1))
+				return true;
 
 			return false;
 		}
