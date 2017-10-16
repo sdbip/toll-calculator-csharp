@@ -19,7 +19,7 @@ namespace TollCalculatorTests
 		[TestCase(7, 5, 18)]
 		[TestCase(8, 5, 13)]
 		[TestCase(8, 35, 8)]
-		[TestCase(12, 5, 0)] // TODO: Bug?
+		[TestCase(12, 5, 8)]
 		[TestCase(15, 5, 13)]
 		[TestCase(16, 5, 18)]
 		[TestCase(17, 5, 13)]
