@@ -49,12 +49,12 @@ public class TollCalculator
 		if (IsTollFreeDate(date) || IsTollFreeVehicle(vehicle)) return 0;
 
 		var timeOfDay = new TimeOfDay(date.Hour, date.Minute);
-		return timeOfDay.GetTollFee();
+		return timeOfDay.TollFee;
 	}
 
 	private Boolean IsTollFreeDate(DateTime date)
 	{
 		var calendarDay = new CalendarDay(date.Year, date.Month, date.Day);
-		return calendarDay.IsTollFree();
+		return calendarDay.IsTollFree;
 	}
 }

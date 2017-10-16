@@ -13,30 +13,36 @@ public struct CalendarDay
 		this.day = day;
 	}
 
-	public bool IsTollFree()
+	public bool IsTollFree
 	{
-		if (IsWeekend()) return true;
-
-		if (year == 2013)
+		get
 		{
-			if (month == 1 && day == 1 ||
-				month == 3 && (day == 28 || day == 29) ||
-				month == 4 && (day == 1 || day == 30) ||
-				month == 5 && (day == 1 || day == 8 || day == 9) ||
-				month == 6 && (day == 5 || day == 6 || day == 21) ||
-				month == 7 ||
-				month == 11 && day == 1 ||
-				month == 12 && (day == 24 || day == 25 || day == 26 || day == 31))
+			if (IsWeekend) return true;
+
+			if (year == 2013)
 			{
-				return true;
+				if (month == 1 && day == 1 ||
+					month == 3 && (day == 28 || day == 29) ||
+					month == 4 && (day == 1 || day == 30) ||
+					month == 5 && (day == 1 || day == 8 || day == 9) ||
+					month == 6 && (day == 5 || day == 6 || day == 21) ||
+					month == 7 ||
+					month == 11 && day == 1 ||
+					month == 12 && (day == 24 || day == 25 || day == 26 || day == 31))
+				{
+					return true;
+				}
 			}
+			return false;
 		}
-		return false;
 	}
 
-	bool IsWeekend()
+	bool IsWeekend
 	{
-		var dayOfWeek = new DateTime(year, month, day).DayOfWeek;
-		return dayOfWeek == DayOfWeek.Saturday || dayOfWeek == DayOfWeek.Sunday;
+		get
+		{
+			var dayOfWeek = new DateTime(year, month, day).DayOfWeek;
+			return dayOfWeek == DayOfWeek.Saturday || dayOfWeek == DayOfWeek.Sunday;
+		}
 	}
 }
