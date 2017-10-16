@@ -86,6 +86,32 @@ namespace TollCalculatorTests
 			Assert.AreEqual(0, fee);
 		}
 
+		[TestCase(1, 1)]   // New year's Day
+		[TestCase(4, 1)]   // April Fools
+		[TestCase(4, 1)]   // Maundy Thursday
+		[TestCase(4, 2)]   // Good Friday
+		[TestCase(4, 30)]  // King's Birthday
+		[TestCase(5, 1)]   // Labour Day
+		[TestCase(5, 12)]  // Eve of the Ascension
+		[TestCase(5, 13)]  // Day of the Ascension
+		[TestCase(6, 5)]   // National Day Eve
+		[TestCase(6, 6)]   // National Day
+		[TestCase(6, 25)]  // Midsummer Eve
+		[TestCase(7, 9)]   // Some day in July
+		[TestCase(11, 1)]  // Halloween
+		[TestCase(12, 24)] // Christmas Eve
+		[TestCase(12, 25)] // Christmas Day
+		[TestCase(12, 26)] // Boxing Day
+		[TestCase(12, 31)] // New Year's Eve
+		public void TollFreeDates2021(int month, int day)
+		{
+			var time = new DateTime(2021, month, day, 7, 5, 0);
+
+			var fee = calculator.GetTollFee(VehicleType.Car, new DateTime[] { time });
+
+			Assert.AreEqual(0, fee);
+		}
+
 		[Test]
 		public void TollFreeForMotorcycles()
 		{
