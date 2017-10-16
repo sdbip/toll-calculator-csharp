@@ -32,6 +32,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Test.cs" />
+    <Compile Include="Source\Car.cs" />
+    <Compile Include="Source\Motorbike.cs" />
+    <Compile Include="Source\TollCalculator.cs" />
+    <Compile Include="Source\Vehicle.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
