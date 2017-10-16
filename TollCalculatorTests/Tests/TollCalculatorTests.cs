@@ -44,15 +44,42 @@ namespace TollCalculatorTests
 		[TestCase(5, 9)]   // Day of the Ascension
 		[TestCase(6, 5)]   // National Day Eve
 		[TestCase(6, 6)]   // National Day
+		[TestCase(6, 21)]  // Midsummer Eve
 		[TestCase(7, 9)]   // Some day in July
 		[TestCase(11, 1)]  // Halloween
 		[TestCase(12, 24)] // Christmas Eve
 		[TestCase(12, 25)] // Christmas Day
 		[TestCase(12, 26)] // Boxing Day
 		[TestCase(12, 31)] // New Year's Eve
-		public void TollFreeDates(int month, int day)
+		public void TollFreeDates2013(int month, int day)
 		{
 			var time = new DateTime(2013, month, day, 7, 5, 0);
+
+			var fee = calculator.GetTollFee(VehicleType.Car, new DateTime[] { time });
+
+			Assert.AreEqual(0, fee);
+		}
+
+		[TestCase(1, 1)]   // New year's Day
+		[TestCase(4, 1)]   // April Fools
+		[TestCase(4, 13)]  // Maundy Thursday
+		[TestCase(4, 14)]  // Good Friday
+		[TestCase(4, 30)]  // King's Birthday
+		[TestCase(5, 1)]   // Labour Day
+		[TestCase(5, 24)]  // Eve of the Ascension
+		[TestCase(5, 25)]  // Day of the Ascension
+		[TestCase(6, 5)]   // National Day Eve
+		[TestCase(6, 6)]   // National Day
+		[TestCase(6, 23)]  // Midsummer Eve
+		[TestCase(7, 9)]   // Some day in July
+		[TestCase(11, 1)]  // Halloween
+		[TestCase(12, 24)] // Christmas Eve
+		[TestCase(12, 25)] // Christmas Day
+		[TestCase(12, 26)] // Boxing Day
+		[TestCase(12, 31)] // New Year's Eve
+		public void TollFreeDates2017(int month, int day)
+		{
+			var time = new DateTime(2017, month, day, 7, 5, 0);
 
 			var fee = calculator.GetTollFee(VehicleType.Car, new DateTime[] { time });
 

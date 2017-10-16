@@ -35,6 +35,7 @@
     <Compile Include="Tests\TollCalculatorTests.cs" />
     <Compile Include="Source\VehicleType.cs" />
     <Compile Include="Source\TimeOfDay.cs" />
+    <Compile Include="Source\CalendarDay.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
