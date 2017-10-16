@@ -31,11 +31,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Test.cs" />
     <Compile Include="Source\Car.cs" />
     <Compile Include="Source\Motorbike.cs" />
     <Compile Include="Source\TollCalculator.cs" />
     <Compile Include="Source\Vehicle.cs" />
+    <Compile Include="Tests\TollCalculatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
