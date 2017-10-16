@@ -15,34 +15,38 @@ public struct CalendarDay
 
 	public bool IsTollFree
 	{
+		get { return IsWeekend || IsFreeForHoliday; }
+	}
+
+	bool IsFreeForHoliday
+	{
 		get
 		{
-			if (IsWeekend) return true;
+			if (month == 1 && day == 1 ||
+				month == 4 && (day == 1 || day == 30) ||
+				month == 5 && day == 1 ||
+				month == 6 && (day == 5 || day == 6) ||
+				month == 7 ||
+				month == 11 && day == 1 ||
+				month == 12 && (day == 24 || day == 25 || day == 26 || day == 31))
+			{
+				return true;
+			}
 
 			if (year == 2013)
 			{
-				if (month == 1 && day == 1 ||
-					month == 3 && (day == 28 || day == 29) ||
-					month == 4 && (day == 1 || day == 30) ||
-					month == 5 && (day == 1 || day == 8 || day == 9) ||
-					month == 6 && (day == 5 || day == 6 || day == 21) ||
-					month == 7 ||
-					month == 11 && day == 1 ||
-					month == 12 && (day == 24 || day == 25 || day == 26 || day == 31))
+				if (month == 3 && (day == 28 || day == 29) || // Easter
+				    month == 5 && (day == 8 || day == 9) ||   // the Ascension
+				    month == 6 && day == 21)                  // Midsummer
 				{
 					return true;
 				}
 			}
-			else
+			else // TODO: assumes 2017
 			{
-				if (month == 1 && day == 1 ||
-					month == 4 && (day == 13 || day == 14) ||
-					month == 4 && (day == 1 || day == 30) ||
-					month == 5 && (day == 1 || day == 24 || day == 25) ||
-				    month == 6 && (day == 5 || day == 6 || day == 21) ||
-				    month == 7 ||
-				    month == 11 && day == 1 ||
-				    month == 12 && (day == 24 || day == 25 || day == 26 || day == 31))
+				if (month == 4 && (day == 13 || day == 14) || // Easter
+					month == 5 && (day == 24 || day == 25) || // the Ascension
+					month == 6 && day == 23)                  // Midsummer
 				{
 					return true;
 				}

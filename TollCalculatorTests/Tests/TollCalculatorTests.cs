@@ -44,6 +44,7 @@ namespace TollCalculatorTests
 		[TestCase(5, 9)]   // Day of the Ascension
 		[TestCase(6, 5)]   // National Day Eve
 		[TestCase(6, 6)]   // National Day
+		[TestCase(6, 21)]  // Midsummer Eve
 		[TestCase(7, 9)]   // Some day in July
 		[TestCase(11, 1)]  // Halloween
 		[TestCase(12, 24)] // Christmas Eve
@@ -69,6 +70,7 @@ namespace TollCalculatorTests
 		[TestCase(5, 25)]  // Day of the Ascension
 		[TestCase(6, 5)]   // National Day Eve
 		[TestCase(6, 6)]   // National Day
+		[TestCase(6, 23)]  // Midsummer Eve
 		[TestCase(7, 9)]   // Some day in July
 		[TestCase(11, 1)]  // Halloween
 		[TestCase(12, 24)] // Christmas Eve
