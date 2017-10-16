@@ -33,6 +33,21 @@ public struct CalendarDay
 					return true;
 				}
 			}
+			else
+			{
+				if (month == 1 && day == 1 ||
+					month == 4 && (day == 13 || day == 14) ||
+					month == 4 && (day == 1 || day == 30) ||
+					month == 5 && (day == 1 || day == 24 || day == 25) ||
+				    month == 6 && (day == 5 || day == 6 || day == 21) ||
+				    month == 7 ||
+				    month == 11 && day == 1 ||
+				    month == 12 && (day == 24 || day == 25 || day == 26 || day == 31))
+				{
+					return true;
+				}
+
+			}
 			return false;
 		}
 	}
