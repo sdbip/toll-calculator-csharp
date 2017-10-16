@@ -61,6 +61,16 @@ namespace TollCalculatorTests
 		}
 
 		[Test]
+		public void TollFreeForMotorcycles()
+		{
+			var time = new DateTime(2013, 1, 2, 7, 5, 0);
+
+			var fee = calculator.GetTollFee(new Motorbike(), new DateTime[] { time });
+
+			Assert.AreEqual(0, fee);
+		}
+
+		[Test]
 		public void NoFeeForMultiplePassesInMarch() // Bug?
 		{
 			var offToWork = new DateTime(2013, 3, 3, 6, 5, 0);
