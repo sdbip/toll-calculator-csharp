@@ -1,6 +1,5 @@
 ﻿using System;
 using NUnit.Framework;
-using TollFeeCalculator;
 
 namespace TollCalculatorTests
 {
@@ -12,7 +11,7 @@ namespace TollCalculatorTests
 		[Test, Ignore("Crashes at this time")]
 		public void NoFeeIfNoPasses()
 		{
-			calculator.GetTollFee(new Car(), new DateTime[0]);
+			calculator.GetTollFee(VehicleType.Car, new DateTime[0]);
 		}
 
 		[TestCase(6, 5, 8)]
@@ -30,7 +29,7 @@ namespace TollCalculatorTests
 		{
 			var time = new DateTime(2013, 1, 2, hour, minute, 0);
 
-			var fee = calculator.GetTollFee(new Car(), new DateTime[] { time });
+			var fee = calculator.GetTollFee(VehicleType.Car, new DateTime[] { time });
 
 			Assert.AreEqual(expectedFee, fee);
 		}
@@ -55,7 +54,7 @@ namespace TollCalculatorTests
 		{
 			var time = new DateTime(2013, month, day, 7, 5, 0);
 
-			var fee = calculator.GetTollFee(new Car(), new DateTime[] { time });
+			var fee = calculator.GetTollFee(VehicleType.Car, new DateTime[] { time });
 
 			Assert.AreEqual(0, fee);
 		}
@@ -65,7 +64,7 @@ namespace TollCalculatorTests
 		{
 			var time = new DateTime(2013, 1, 2, 7, 5, 0);
 
-			var fee = calculator.GetTollFee(new Motorbike(), new DateTime[] { time });
+			var fee = calculator.GetTollFee(VehicleType.Motorbike, new DateTime[] { time });
 
 			Assert.AreEqual(0, fee);
 		}
@@ -76,7 +75,7 @@ namespace TollCalculatorTests
 			var offToWork = new DateTime(2013, 3, 3, 6, 5, 0);
 			var goingHome = new DateTime(2013, 3, 3, 15, 5, 0);
 
-			var fee = calculator.GetTollFee(new Car(), new DateTime[] { offToWork, goingHome });
+			var fee = calculator.GetTollFee(VehicleType.Car, new DateTime[] { offToWork, goingHome });
 
 			Assert.AreEqual(0, fee);
 		}
@@ -88,7 +87,7 @@ namespace TollCalculatorTests
 			var offToWork = new DateTime(2013, 1, 2, 6, 5, 0);
 			var goingHome = new DateTime(2013, 1, 2, 15, 5, 0);
 
-			var fee = calculator.GetTollFee(new Car(), new DateTime[] { offToWork, goingHome });
+			var fee = calculator.GetTollFee(VehicleType.Car, new DateTime[] { offToWork, goingHome });
 
 			Assert.AreEqual(13, fee);
 		}
