@@ -28,9 +28,9 @@ namespace TollCalculatorTests
 		[TestCase(18, 30, 0)]
 		public void SinglePassFee(int hour, int minute, int expectedFee)
 		{
-			var earlyMorning = new DateTime(2013, 1, 2, hour, minute, 0);
+			var time = new DateTime(2013, 1, 2, hour, minute, 0);
 
-			var fee = calculator.GetTollFee(new Car(), new DateTime[] { earlyMorning });
+			var fee = calculator.GetTollFee(new Car(), new DateTime[] { time });
 
 			Assert.AreEqual(expectedFee, fee);
 		}
@@ -51,11 +51,11 @@ namespace TollCalculatorTests
 		[TestCase(12, 25)] // Christmas Day
 		[TestCase(12, 26)] // Boxing Day
 		[TestCase(12, 31)] // New Year's Eve
-		public void tollFreeDates(int month, int day)
+		public void TollFreeDates(int month, int day)
 		{
-			var earlyMorning = new DateTime(2013, month, day, 7, 5, 0);
+			var time = new DateTime(2013, month, day, 7, 5, 0);
 
-			var fee = calculator.GetTollFee(new Car(), new DateTime[] { earlyMorning });
+			var fee = calculator.GetTollFee(new Car(), new DateTime[] { time });
 
 			Assert.AreEqual(0, fee);
 		}
