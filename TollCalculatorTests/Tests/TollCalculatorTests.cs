@@ -59,5 +59,28 @@ namespace TollCalculatorTests
 
 			Assert.AreEqual(0, fee);
 		}
+
+		[Test]
+		public void NoFeeForMultiplePassesInMarch() // Bug?
+		{
+			var offToWork = new DateTime(2013, 3, 3, 6, 5, 0);
+			var goingHome = new DateTime(2013, 3, 3, 15, 5, 0);
+
+			var fee = calculator.GetTollFee(new Car(), new DateTime[] { offToWork, goingHome });
+
+			Assert.AreEqual(0, fee);
+		}
+
+
+		[Test]
+		public void MultiplePassesDoNotAddUp() // Bug?
+		{
+			var offToWork = new DateTime(2013, 1, 2, 6, 5, 0);
+			var goingHome = new DateTime(2013, 1, 2, 15, 5, 0);
+
+			var fee = calculator.GetTollFee(new Car(), new DateTime[] { offToWork, goingHome });
+
+			Assert.AreEqual(13, fee);
+		}
 	}
 }
