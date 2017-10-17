@@ -143,5 +143,23 @@ namespace TollCalculatorTests
 
 			Assert.AreEqual(21, fee);
 		}
+
+		[Test]
+		public void NeverExceeds60InTotal()
+		{
+			var dates = new DateTime[] {
+				new DateTime(2013, 1, 2,  6, 0, 0),  //  8
+				new DateTime(2013, 1, 2,  7, 1, 0),  // 18
+				new DateTime(2013, 1, 2,  8, 2, 0),  // 13
+				new DateTime(2013, 1, 2,  9, 3, 0),  //  8
+				new DateTime(2013, 1, 2, 10, 4, 0),  //  8
+				new DateTime(2013, 1, 2, 11, 5, 0),  //  8
+			};
+
+			var fee = calculator.GetTollFee(VehicleType.Car, dates);
+
+			// 8+18+13+8+8+8 == 63
+			Assert.AreEqual(60, fee);
+		}
 	}
 }
