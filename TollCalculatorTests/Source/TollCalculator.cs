@@ -27,7 +27,6 @@ public class TollCalculator
 		{
 			PassToll(time);
 		}
-		if (totalFee > 60) totalFee = 60;
 	}
 
 	public void PassToll(TimeOfDay time)
@@ -48,6 +47,8 @@ public class TollCalculator
 			feeForThisHour = nextFee;
 			startOfTheHour = time;
 		}
+
+		if (totalFee > 60) totalFee = 60;
 	}
 }
 
