@@ -8,7 +8,7 @@ namespace TollCalculatorTests
 	{
 		readonly TollCalculator calculator = new TollCalculator();
 
-		[Test, Ignore("Crashes at this time")]
+		[Test]
 		public void NoFeeIfNoPasses()
 		{
 			calculator.GetTollFee(VehicleType.Car, new DateTime[0]);
