@@ -13,15 +13,14 @@ public class TollCalculator
 		this.day = day;
 	}
 
-	public int GetTollFee(VehicleType vehicle, DateTime[] dates)
+	public int GetTollFee(VehicleType vehicle, TimeOfDay[] times)
 	{
-		if (dates.Length == 0) return 0;
+		if (times.Length == 0) return 0;
 		if (vehicle.IsTollFree()) return 0;
 		if (day.IsTollFree) return 0;
 
-		foreach (var date in dates)
+		foreach (var time in times)
 		{
-			var time = new TimeOfDay(date.Hour, date.Minute);
 			int nextFee = time.TollFee;
 			if (startOfTheHour == null) startOfTheHour = time;
 
