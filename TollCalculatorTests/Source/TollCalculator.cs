@@ -3,18 +3,21 @@
 public class TollCalculator
 {
 	readonly CalendarDay day;
+	readonly VehicleType vehicle;
+
 	public int TotalFee => totalFee;
 
 	int totalFee;
 	TimeOfDay? startOfTheHour;
 	int feeForThisHour;
 
-	public TollCalculator(CalendarDay day)
+	public TollCalculator(CalendarDay day, VehicleType vehicle)
 	{
 		this.day = day;
+		this.vehicle = vehicle;
 	}
 
-	public void GetTollFee(VehicleType vehicle, TimeOfDay[] times)
+	public void GetTollFee(TimeOfDay[] times)
 	{
 		if (times.Length == 0) return;
 		if (vehicle.IsTollFree()) return;
