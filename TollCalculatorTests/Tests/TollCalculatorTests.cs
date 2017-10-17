@@ -122,10 +122,9 @@ namespace TollCalculatorTests
 		public void TollFreeForMotorcycles()
 		{
 			var day = new CalendarDay { year = 2013, month = 1, day = 2 };
-			var time = new TimeOfDay { hour = 7, minute = 5 };
-
 			var calculator = new TollCalculator(day, VehicleType.Motorbike);
-			calculator.GetTollFee(new TimeOfDay[] { time });
+
+			calculator.PassToll(new TimeOfDay { hour = 7, minute = 5 });
 
 			Assert.AreEqual(0, calculator.TotalFee);
 		}

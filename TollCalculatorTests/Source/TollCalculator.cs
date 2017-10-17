@@ -17,19 +17,9 @@ public class TollCalculator
 		this.vehicle = vehicle;
 	}
 
-	public void GetTollFee(TimeOfDay[] times)
-	{
-		if (times.Length == 0) return;
-		if (vehicle.IsTollFree()) return;
-
-		foreach (var time in times)
-		{
-			PassToll(time);
-		}
-	}
-
 	public void PassToll(TimeOfDay time)
 	{
+		if (vehicle.IsTollFree()) return;
 		if (day.IsTollFree) return;
 
 		int nextFee = time.TollFee;
