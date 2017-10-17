@@ -21,7 +21,6 @@ public class TollCalculator
 	{
 		if (times.Length == 0) return;
 		if (vehicle.IsTollFree()) return;
-		if (day.IsTollFree) return;
 
 		foreach (var time in times)
 		{
@@ -31,6 +30,8 @@ public class TollCalculator
 
 	public void PassToll(TimeOfDay time)
 	{
+		if (day.IsTollFree) return;
+
 		int nextFee = time.TollFee;
 		if (startOfTheHour == null) startOfTheHour = time;
 
