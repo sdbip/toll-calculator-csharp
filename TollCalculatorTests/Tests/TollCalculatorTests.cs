@@ -12,7 +12,8 @@ namespace TollCalculatorTests
 		{
 			var day = new CalendarDay { year = 2013, month = 1, day = 2 };
 			var calculator = new TollCalculator(day, VehicleType.Car);
-			calculator.GetTollFee(new TimeOfDay[0]);
+
+			Assert.AreEqual(0, calculator.TotalFee);
 		}
 
 		[TestCase(6, 5, 8)]
