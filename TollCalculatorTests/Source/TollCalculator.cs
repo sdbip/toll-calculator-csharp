@@ -2,18 +2,24 @@
 
 public class TollCalculator
 {
+	readonly CalendarDay day;
+
+	public TollCalculator(CalendarDay day)
+	{
+		this.day = day;
+	}
+
 	public int GetTollFee(VehicleType vehicle, DateTime[] dates)
 	{
 		if (dates.Length == 0) return 0;
 		if (vehicle.IsTollFree()) return 0;
+		if (day.IsTollFree) return 0;
 
 		int totalFee = 0;
 		var startOfTheHour = dates[0];
 		int feeForThisHour = 0;
 		foreach (var date in dates)
 		{
-			if (new CalendarDay(dates[0].Year, date.Month, date.Day).IsTollFree) continue;
-
 			int nextFee = new TimeOfDay(date.Hour, date.Minute).TollFee;
 			if ((date - startOfTheHour).TotalHours < 1.0)
 			{
