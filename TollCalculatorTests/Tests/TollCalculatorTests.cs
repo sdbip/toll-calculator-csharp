@@ -123,14 +123,14 @@ namespace TollCalculatorTests
 		}
 
 		[Test]
-		public void MultiplePassesDoNotAddUp() // Bug?
+		public void MultiplePassesInOneHourCostsTheHighestFeeOnly()
 		{
-			var offToWork = new DateTime(2013, 1, 2, 6, 5, 0);
-			var goingHome = new DateTime(2013, 1, 2, 15, 5, 0);
+			var offToWork = new DateTime(2013, 1, 2, 6, 15, 0); // 8
+			var goingHome = new DateTime(2013, 1, 2, 7, 5, 0);  // 18
 
 			var fee = calculator.GetTollFee(VehicleType.Car, new DateTime[] { offToWork, goingHome });
 
-			Assert.AreEqual(13, fee);
+			Assert.AreEqual(18, fee);
 		}
 	}
 }
