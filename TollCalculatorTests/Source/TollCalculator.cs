@@ -5,7 +5,7 @@ public class TollCalculator
 	readonly CalendarDay day;
 
 	int totalFee;
-	DateTime? startOfTheHour;
+	TimeOfDay? startOfTheHour;
 	int feeForThisHour;
 
 	public TollCalculator(CalendarDay day)
@@ -21,9 +21,12 @@ public class TollCalculator
 
 		foreach (var date in dates)
 		{
-			int nextFee = new TimeOfDay(date.Hour, date.Minute).TollFee;
-			if (startOfTheHour == null) startOfTheHour = date;
-			if ((date - startOfTheHour.Value).TotalHours < 1.0)
+			var time = new TimeOfDay(date.Hour, date.Minute);
+			int nextFee = time.TollFee;
+			if (startOfTheHour == null) startOfTheHour = time;
+
+			if (time.hour - startOfTheHour.Value.hour == 0 ||
+			    time.hour - startOfTheHour.Value.hour == 1 && time.minute < startOfTheHour.Value.minute)
 			{
 				totalFee -= feeForThisHour;
 				feeForThisHour = Math.Max(feeForThisHour, nextFee);
@@ -33,7 +36,7 @@ public class TollCalculator
 			{
 				totalFee += nextFee;
 				feeForThisHour = nextFee;
-				startOfTheHour = date;
+				startOfTheHour = time;
 			}
 		}
 		if (totalFee > 60) totalFee = 60;
