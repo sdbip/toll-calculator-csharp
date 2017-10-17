@@ -32,9 +32,9 @@ namespace TollCalculatorTests
 			var time = new TimeOfDay(hour, minute);
 
 			var calculator = new TollCalculator(day);
-			var fee = calculator.GetTollFee(VehicleType.Car, new TimeOfDay[] { time });
+			calculator.GetTollFee(VehicleType.Car, new TimeOfDay[] { time });
 
-			Assert.AreEqual(expectedFee, fee);
+			Assert.AreEqual(expectedFee, calculator.TotalFee);
 		}
 
 		[TestCase(1, 1)]   // New year's Day
@@ -60,9 +60,9 @@ namespace TollCalculatorTests
 			var time = new TimeOfDay { hour = 7, minute = 5 };
 
 			var calculator = new TollCalculator(calendarDay);
-			var fee = calculator.GetTollFee(VehicleType.Car, new TimeOfDay[] { time });
+			calculator.GetTollFee(VehicleType.Car, new TimeOfDay[] { time });
 
-			Assert.AreEqual(0, fee);
+			Assert.AreEqual(0, calculator.TotalFee);
 		}
 
 		[TestCase(1, 1)]   // New year's Day
@@ -88,9 +88,9 @@ namespace TollCalculatorTests
 			var time = new TimeOfDay { hour = 7, minute = 5 };
 
 			var calculator = new TollCalculator(calendarDay);
-			var fee = calculator.GetTollFee(VehicleType.Car, new TimeOfDay[] { time });
+			calculator.GetTollFee(VehicleType.Car, new TimeOfDay[] { time });
 
-			Assert.AreEqual(0, fee);
+			Assert.AreEqual(0, calculator.TotalFee);
 		}
 
 		[TestCase(1, 1)]   // New year's Day
@@ -116,9 +116,9 @@ namespace TollCalculatorTests
 			var time = new TimeOfDay { hour = 7, minute = 5 };
 
 			var calculator = new TollCalculator(calendarDay);
-			var fee = calculator.GetTollFee(VehicleType.Car, new TimeOfDay[] { time });
+			calculator.GetTollFee(VehicleType.Car, new TimeOfDay[] { time });
 
-			Assert.AreEqual(0, fee);
+			Assert.AreEqual(0, calculator.TotalFee);
 		}
 
 		[Test]
@@ -128,9 +128,9 @@ namespace TollCalculatorTests
 			var time = new TimeOfDay { hour = 7, minute = 5 };
 
 			var calculator = new TollCalculator(day);
-			var fee = calculator.GetTollFee(VehicleType.Motorbike, new TimeOfDay[] { time });
+			calculator.GetTollFee(VehicleType.Motorbike, new TimeOfDay[] { time });
 
-			Assert.AreEqual(0, fee);
+			Assert.AreEqual(0, calculator.TotalFee);
 		}
 
 		[Test]
@@ -141,9 +141,9 @@ namespace TollCalculatorTests
 			var goingHome = new TimeOfDay { hour = 7, minute = 5 };  // 18
 
 			var calculator = new TollCalculator(day);
-			var fee = calculator.GetTollFee(VehicleType.Car, new TimeOfDay[] { offToWork, goingHome });
+			calculator.GetTollFee(VehicleType.Car, new TimeOfDay[] { offToWork, goingHome });
 
-			Assert.AreEqual(18, fee);
+			Assert.AreEqual(18, calculator.TotalFee);
 		}
 
 		[Test]
@@ -154,9 +154,9 @@ namespace TollCalculatorTests
 			var goingHome = new TimeOfDay { hour = 15, minute = 5 }; // 13
 
 			var calculator = new TollCalculator(day);
-			var fee = calculator.GetTollFee(VehicleType.Car, new TimeOfDay[] { offToWork, goingHome });
+			calculator.GetTollFee(VehicleType.Car, new TimeOfDay[] { offToWork, goingHome });
 
-			Assert.AreEqual(21, fee);
+			Assert.AreEqual(21, calculator.TotalFee);
 		}
 
 		[Test]
@@ -173,10 +173,10 @@ namespace TollCalculatorTests
 			};
 
 			var calculator = new TollCalculator(day);
-			var fee = calculator.GetTollFee(VehicleType.Car, times);
+			calculator.GetTollFee(VehicleType.Car, times);
 
 			// 8+18+13+8+8+8 == 63
-			Assert.AreEqual(60, fee);
+			Assert.AreEqual(60, calculator.TotalFee);
 		}
 	}
 }
