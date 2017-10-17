@@ -6,12 +6,14 @@ namespace TollCalculatorTests
 	[TestFixture]
 	public class TollCalculatorTests
 	{
-		readonly TollCalculator calculator = new TollCalculator();
 
 		[Test]
 		public void NoFeeIfNoPasses()
 		{
-			calculator.GetTollFee(VehicleType.Car, new DateTime[0]);
+			var day = new CalendarDay { year = 2013, month = 1, day = 2 };
+			var calculator = new TollCalculator(day, VehicleType.Car);
+
+			Assert.AreEqual(0, calculator.TotalFee);
 		}
 
 		[TestCase(6, 5, 8)]
@@ -27,11 +29,12 @@ namespace TollCalculatorTests
 		[TestCase(18, 30, 0)]
 		public void SinglePassFee(int hour, int minute, int expectedFee)
 		{
-			var time = new DateTime(2013, 1, 2, hour, minute, 0);
+			var day = new CalendarDay { year = 2013, month = 1, day = 2 };
+			var calculator = new TollCalculator(day, VehicleType.Car);
 
-			var fee = calculator.GetTollFee(VehicleType.Car, new DateTime[] { time });
+			calculator.PassToll(new TimeOfDay(hour, minute));
 
-			Assert.AreEqual(expectedFee, fee);
+			Assert.AreEqual(expectedFee, calculator.TotalFee);
 		}
 
 		[TestCase(1, 1)]   // New year's Day
@@ -53,11 +56,12 @@ namespace TollCalculatorTests
 		[TestCase(12, 31)] // New Year's Eve
 		public void TollFreeDates2013(int month, int day)
 		{
-			var time = new DateTime(2013, month, day, 7, 5, 0);
+			var calendarDay = new CalendarDay(2013, month, day);
+			var calculator = new TollCalculator(calendarDay, VehicleType.Car);
 
-			var fee = calculator.GetTollFee(VehicleType.Car, new DateTime[] { time });
+			calculator.PassToll(new TimeOfDay { hour = 7, minute = 5 });
 
-			Assert.AreEqual(0, fee);
+			Assert.AreEqual(0, calculator.TotalFee);
 		}
 
 		[TestCase(1, 1)]   // New year's Day
@@ -79,11 +83,12 @@ namespace TollCalculatorTests
 		[TestCase(12, 31)] // New Year's Eve
 		public void TollFreeDates2017(int month, int day)
 		{
-			var time = new DateTime(2017, month, day, 7, 5, 0);
+			var calendarDay = new CalendarDay(2017, month, day);
+			var calculator = new TollCalculator(calendarDay, VehicleType.Car);
 
-			var fee = calculator.GetTollFee(VehicleType.Car, new DateTime[] { time });
+			calculator.PassToll(new TimeOfDay { hour = 7, minute = 5 });
 
-			Assert.AreEqual(0, fee);
+			Assert.AreEqual(0, calculator.TotalFee);
 		}
 
 		[TestCase(1, 1)]   // New year's Day
@@ -105,61 +110,64 @@ namespace TollCalculatorTests
 		[TestCase(12, 31)] // New Year's Eve
 		public void TollFreeDates2021(int month, int day)
 		{
-			var time = new DateTime(2021, month, day, 7, 5, 0);
+			var calendarDay = new CalendarDay(2021, month, day);
+			var calculator = new TollCalculator(calendarDay, VehicleType.Car);
 
-			var fee = calculator.GetTollFee(VehicleType.Car, new DateTime[] { time });
+			calculator.PassToll(new TimeOfDay { hour = 7, minute = 5 });
 
-			Assert.AreEqual(0, fee);
+			Assert.AreEqual(0, calculator.TotalFee);
 		}
 
 		[Test]
 		public void TollFreeForMotorcycles()
 		{
-			var time = new DateTime(2013, 1, 2, 7, 5, 0);
+			var day = new CalendarDay { year = 2013, month = 1, day = 2 };
+			var calculator = new TollCalculator(day, VehicleType.Motorbike);
 
-			var fee = calculator.GetTollFee(VehicleType.Motorbike, new DateTime[] { time });
+			calculator.PassToll(new TimeOfDay { hour = 7, minute = 5 });
 
-			Assert.AreEqual(0, fee);
+			Assert.AreEqual(0, calculator.TotalFee);
 		}
 
 		[Test]
 		public void MultiplePassesInOneHourCostsTheHighestFeeOnly()
 		{
-			var offToWork = new DateTime(2013, 1, 2, 6, 15, 0); // 8
-			var goingHome = new DateTime(2013, 1, 2, 7, 5, 0);  // 18
+			var day = new CalendarDay { year = 2013, month = 1, day = 2 };
+			var calculator = new TollCalculator(day, VehicleType.Car);
 
-			var fee = calculator.GetTollFee(VehicleType.Car, new DateTime[] { offToWork, goingHome });
+			calculator.PassToll(new TimeOfDay { hour = 6, minute = 15 }); //  8 SEK
+			calculator.PassToll(new TimeOfDay { hour = 7, minute = 5 });  // 18 SEK
 
-			Assert.AreEqual(18, fee);
+			Assert.AreEqual(18, calculator.TotalFee);
 		}
 
 		[Test]
 		public void NewPassAfterOneHourIsAddedToTheTotal()
 		{
-			var offToWork = new DateTime(2013, 1, 2, 6, 15, 0); // 8
-			var goingHome = new DateTime(2013, 1, 2, 15, 5, 0); // 13
+			var day = new CalendarDay { year = 2013, month = 1, day = 2 };
+			var calculator = new TollCalculator(day, VehicleType.Car);
 
-			var fee = calculator.GetTollFee(VehicleType.Car, new DateTime[] { offToWork, goingHome });
+			calculator.PassToll(new TimeOfDay { hour = 6, minute = 15 }); //  8 SEK
+			calculator.PassToll(new TimeOfDay { hour = 15, minute = 5 }); // 13 SEK
 
-			Assert.AreEqual(21, fee);
+			Assert.AreEqual(21, calculator.TotalFee);
 		}
 
 		[Test]
 		public void NeverExceeds60InTotal()
 		{
-			var dates = new DateTime[] {
-				new DateTime(2013, 1, 2,  6, 0, 0),  //  8
-				new DateTime(2013, 1, 2,  7, 1, 0),  // 18
-				new DateTime(2013, 1, 2,  8, 2, 0),  // 13
-				new DateTime(2013, 1, 2,  9, 3, 0),  //  8
-				new DateTime(2013, 1, 2, 10, 4, 0),  //  8
-				new DateTime(2013, 1, 2, 11, 5, 0),  //  8
-			};
+			var day = new CalendarDay { year = 2013, month = 1, day = 2 };
 
-			var fee = calculator.GetTollFee(VehicleType.Car, dates);
+			var calculator = new TollCalculator(day, VehicleType.Car);
+			calculator.PassToll(new TimeOfDay { hour =  6, minute = 0 }); //  8 SEK
+			calculator.PassToll(new TimeOfDay { hour =  7, minute = 1 }); // 18 SEK
+			calculator.PassToll(new TimeOfDay { hour =  8, minute = 2 }); // 13 SEK
+			calculator.PassToll(new TimeOfDay { hour =  9, minute = 3 }); //  8 SEK
+			calculator.PassToll(new TimeOfDay { hour = 10, minute = 4 }); //  8 SEK
+			calculator.PassToll(new TimeOfDay { hour = 11, minute = 5 }); //  8 SEK
 
 			// 8+18+13+8+8+8 == 63
-			Assert.AreEqual(60, fee);
+			Assert.AreEqual(60, calculator.TotalFee);
 		}
 	}
 }

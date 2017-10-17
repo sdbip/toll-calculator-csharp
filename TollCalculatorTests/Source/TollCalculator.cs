@@ -2,38 +2,44 @@
 
 public class TollCalculator
 {
-	public int GetTollFee(VehicleType vehicle, DateTime[] dates)
-	{
-		if (dates.Length == 0) return 0;
+	readonly CalendarDay day;
+	readonly VehicleType vehicle;
 
-		int totalFee = 0;
-		var startOfTheHour = dates[0];
-		int feeForThisHour = 0;
-		foreach (var date in dates)
-		{
-			int nextFee = GetTollFee(date, vehicle);
-			if ((date - startOfTheHour).TotalHours < 1.0)
-			{
-				totalFee -= feeForThisHour;
-				feeForThisHour = Math.Max(feeForThisHour, nextFee);
-				totalFee += feeForThisHour;
-			}
-			else
-			{
-				totalFee += nextFee;
-				feeForThisHour = nextFee;
-				startOfTheHour = date;
-			}
-		}
-		if (totalFee > 60) totalFee = 60;
-		return totalFee;
+	public int TotalFee => totalFee;
+
+	int totalFee;
+	TimeOfDay? startOfTheHour;
+	int feeForThisHour;
+
+	public TollCalculator(CalendarDay day, VehicleType vehicle)
+	{
+		this.day = day;
+		this.vehicle = vehicle;
 	}
 
-	public int GetTollFee(DateTime date, VehicleType vehicle)
+	public void PassToll(TimeOfDay time)
 	{
-		if (new CalendarDay(date.Year, date.Month, date.Day).IsTollFree || vehicle.IsTollFree()) return 0;
+		if (vehicle.IsTollFree()) return;
+		if (day.IsTollFree) return;
 
-		return new TimeOfDay(date.Hour, date.Minute).TollFee;
+		int nextFee = time.TollFee;
+		if (startOfTheHour == null) startOfTheHour = time;
+
+		if (time.hour - startOfTheHour.Value.hour == 0 ||
+			time.hour - startOfTheHour.Value.hour == 1 && time.minute < startOfTheHour.Value.minute)
+		{
+			totalFee -= feeForThisHour;
+			feeForThisHour = Math.Max(feeForThisHour, nextFee);
+			totalFee += feeForThisHour;
+		}
+		else
+		{
+			totalFee += nextFee;
+			feeForThisHour = nextFee;
+			startOfTheHour = time;
+		}
+
+		if (totalFee > 60) totalFee = 60;
 	}
 }
 
