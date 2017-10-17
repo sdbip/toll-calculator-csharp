@@ -19,10 +19,10 @@ public class TollCalculator
 		if (vehicle.IsTollFree()) return 0;
 		if (day.IsTollFree) return 0;
 
-		startOfTheHour = dates[0];
 		foreach (var date in dates)
 		{
 			int nextFee = new TimeOfDay(date.Hour, date.Minute).TollFee;
+			if (startOfTheHour == null) startOfTheHour = date;
 			if ((date - startOfTheHour.Value).TotalHours < 1.0)
 			{
 				totalFee -= feeForThisHour;
