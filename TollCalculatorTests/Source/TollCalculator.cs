@@ -6,25 +6,23 @@ public class TollCalculator
 	{
 		if (dates.Length == 0) return 0;
 
-		DateTime intervalStart = dates[0];
 		int totalFee = 0;
-		foreach (DateTime date in dates)
+		var startOfTheHour = dates[0];
+		int feeForThisHour = 0;
+		foreach (var date in dates)
 		{
 			int nextFee = GetTollFee(date, vehicle);
-			int tempFee = GetTollFee(intervalStart, vehicle);
-
-			long diffInMillies = date.Millisecond - intervalStart.Millisecond;
-			long minutes = diffInMillies / 1000 / 60;
-
-			if (minutes <= 60)
+			if ((date - startOfTheHour).TotalHours < 1.0)
 			{
-				if (totalFee > 0) totalFee -= tempFee;
-				if (nextFee >= tempFee) tempFee = nextFee;
-				totalFee += tempFee;
+				totalFee -= feeForThisHour;
+				feeForThisHour = Math.Max(feeForThisHour, nextFee);
+				totalFee += feeForThisHour;
 			}
 			else
 			{
 				totalFee += nextFee;
+				feeForThisHour = nextFee;
+				startOfTheHour = date;
 			}
 		}
 		if (totalFee > 60) totalFee = 60;

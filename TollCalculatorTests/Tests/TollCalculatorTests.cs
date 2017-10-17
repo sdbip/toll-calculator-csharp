@@ -132,5 +132,16 @@ namespace TollCalculatorTests
 
 			Assert.AreEqual(18, fee);
 		}
+
+		[Test]
+		public void NewPassAfterOneHourIsAddedToTheTotal()
+		{
+			var offToWork = new DateTime(2013, 1, 2, 6, 15, 0); // 8
+			var goingHome = new DateTime(2013, 1, 2, 15, 5, 0); // 13
+
+			var fee = calculator.GetTollFee(VehicleType.Car, new DateTime[] { offToWork, goingHome });
+
+			Assert.AreEqual(21, fee);
+		}
 	}
 }
