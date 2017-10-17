@@ -1,17 +1,7 @@
 ﻿using System;
-using System.Globalization;
 
 public class TollCalculator
 {
-
-	/**
-     * Calculate the total toll fee for one day
-     *
-     * @param vehicle - the vehicle
-     * @param dates   - date and time of all passes on one day
-     * @return - the total toll fee for that day
-     */
-
 	public int GetTollFee(VehicleType vehicle, DateTime[] dates)
 	{
 		DateTime intervalStart = dates[0];
@@ -39,22 +29,18 @@ public class TollCalculator
 		return totalFee;
 	}
 
-	private bool IsTollFreeVehicle(VehicleType vehicle)
-	{
-		return vehicle != VehicleType.Car;
-	}
-
 	public int GetTollFee(DateTime date, VehicleType vehicle)
 	{
-		if (IsTollFreeDate(date) || IsTollFreeVehicle(vehicle)) return 0;
+		if (new CalendarDay(date.Year, date.Month, date.Day).IsTollFree || vehicle.IsTollFree()) return 0;
 
-		var timeOfDay = new TimeOfDay(date.Hour, date.Minute);
-		return timeOfDay.TollFee;
+		return new TimeOfDay(date.Hour, date.Minute).TollFee;
 	}
+}
 
-	private Boolean IsTollFreeDate(DateTime date)
+static class VehicleTypeExtension
+{
+	public static bool IsTollFree(this VehicleType self)
 	{
-		var calendarDay = new CalendarDay(date.Year, date.Month, date.Day);
-		return calendarDay.IsTollFree;
+		return self != VehicleType.Car;
 	}
 }
