@@ -56,27 +56,7 @@ namespace TollCalculator
 		{
 			// The Ascension of Christ occurs on Thursday 40 days after Easter Eve.
 			var easterDay = EasterDay(year);
-			var ascension = easterDay;
-			ascension.Day += 39;
-
-			// ReSharper disable once SwitchStatementMissingSomeCases
-			switch (ascension.Month)
-			{
-				case Month.March when ascension.Day > 31 + 30:
-					ascension.Day -= 31 + 30;
-					ascension.Month = Month.May;
-					return ascension;
-				case Month.March when ascension.Day > 31:
-					ascension.Day -= 31;
-					ascension.Month = Month.April;
-					return ascension;
-				case Month.April when ascension.Day > 30:
-					ascension.Day -= 30;
-					ascension.Month = Month.May;
-					return ascension;
-			}
-
-			return ascension;
+			return easterDay.AddDays(39);
 		}
 
 		private static CalendarDay EasterDay(int year)
@@ -111,10 +91,7 @@ namespace TollCalculator
 			{
 				// According to Wikipedia, Swedish midsummer eve is always
 				// celebrated on the Friday that occurs between 19-25 of June.
-				if (Month != Month.June || Day < 19 || Day > 25)
-				{
-					return false;
-				}
+				if (Month != Month.June || Day < 19 || Day > 25) return false;
 
 				return new DateTime(Year, (int) Month, Day).DayOfWeek == DayOfWeek.Friday;
 			}
@@ -123,6 +100,35 @@ namespace TollCalculator
 		public override string ToString()
 		{
 			return $"{Year}-{(int) Month}-{Day}";
+		}
+
+		// TODO: This is incomplete, but it is only used to calculate the day of the Ascension anyway.
+		private static int DaysInMonth(Month month)
+		{
+			// ReSharper disable once SwitchStatementMissingSomeCases
+			switch (month)
+			{
+				case Month.March:
+				case Month.May:
+					return 31;
+				case Month.April:
+					return 30;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(month), month, null);
+			}
+		}
+
+		// TODO: This is incomplete, but it is only used to calculate the day of the Ascension anyway.
+		private CalendarDay AddDays(int addDays)
+		{
+			var result = this;
+			result.Day += addDays;
+			while (result.Day > DaysInMonth(result.Month))
+			{
+				result.Day -= DaysInMonth(result.Month);
+				result.Month++;
+			}
+			return result;
 		}
 	}
 }
