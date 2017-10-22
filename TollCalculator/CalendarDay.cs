@@ -5,10 +5,10 @@ namespace TollCalculator
 	public struct CalendarDay
 	{
 		public int Year;
-		public int Month;
+		public Month Month;
 		public int Day;
 
-		public CalendarDay(int year, int month, int day)
+		public CalendarDay(int year, Month month, int day)
 		{
 			Year = year;
 			Month = month;
@@ -21,13 +21,13 @@ namespace TollCalculator
 		{
 			get
 			{
-				if (Month == 1 && Day == 1 ||
-					Month == 4 && (Day == 1 || Day == 30) ||
-					Month == 5 && Day == 1 ||
-					Month == 6 && (Day == 5 || Day == 6) ||
-					Month == 7 ||
-					Month == 11 && Day == 1 ||
-					Month == 12 && (Day == 24 || Day == 25 || Day == 26 || Day == 31))
+				if (Month == Month.January && Day == 1 ||
+					Month == Month.April && (Day == 1 || Day == 30) ||
+					Month == Month.May && Day == 1 ||
+					Month == Month.June && (Day == 5 || Day == 6) ||
+					Month == Month.July ||
+					Month == Month.November && Day == 1 ||
+					Month == Month.December && (Day == 24 || Day == 25 || Day == 26 || Day == 31))
 				{
 					return true;
 				}
@@ -47,7 +47,7 @@ namespace TollCalculator
 		{
 			get
 			{
-				var dayOfWeek = new DateTime(Year, Month, Day).DayOfWeek;
+				var dayOfWeek = new DateTime(Year, (int) Month, Day).DayOfWeek;
 				return dayOfWeek == DayOfWeek.Saturday || dayOfWeek == DayOfWeek.Sunday;
 			}
 		}
@@ -62,17 +62,17 @@ namespace TollCalculator
 			// ReSharper disable once SwitchStatementMissingSomeCases
 			switch (ascension.Month)
 			{
-				case 3 when ascension.Day > 31 + 30:
+				case Month.March when ascension.Day > 31 + 30:
 					ascension.Day -= 31 + 30;
-					ascension.Month = 5;
+					ascension.Month = Month.May;
 					return ascension;
-				case 3 when ascension.Day > 31:
+				case Month.March when ascension.Day > 31:
 					ascension.Day -= 31;
-					ascension.Month = 4;
+					ascension.Month = Month.April;
 					return ascension;
-				case 4 when ascension.Day > 30:
+				case Month.April when ascension.Day > 30:
 					ascension.Day -= 30;
-					ascension.Month = 5;
+					ascension.Month = Month.May;
 					return ascension;
 			}
 
@@ -92,24 +92,16 @@ namespace TollCalculator
 			var d = (19 * a + 24) % 30;
 			var e = (2 * b + 4 * c + 6 * d + 5) % 7;
 
-			if (d + e > 9)
+			if (d + e <= 9) return new CalendarDay(year, Month.March, 22 + d + e);
+			var easterDay = d + e - 9;
+			switch (easterDay)
 			{
-				var easterDay = d + e - 9;
-				// ReSharper disable once SwitchStatementMissingSomeCases
-				switch (easterDay)
-				{
-					case 26:
-						easterDay = 19;
-						break;
-					case 25 when d == 28 && e == 6:
-						easterDay = 18;
-						break;
-				}
-				return new CalendarDay(year, 4, easterDay);
-			}
-			else
-			{
-				return new CalendarDay(year, 3, 22 + d + e);
+				case 26:
+					return new CalendarDay(year, Month.April, 19);
+				case 25 when d == 28 && e == 6:
+					return new CalendarDay(year, Month.April, 18);
+				default:
+					return new CalendarDay(year, Month.April, easterDay);
 			}
 		}
 
@@ -119,18 +111,18 @@ namespace TollCalculator
 			{
 				// According to Wikipedia, Swedish midsummer eve is always
 				// celebrated on the Friday that occurs between 19-25 of June.
-				if (Month != 6 || Day < 19 || Day > 25)
+				if (Month != Month.June || Day < 19 || Day > 25)
 				{
 					return false;
 				}
 
-				return new DateTime(Year, Month, Day).DayOfWeek == DayOfWeek.Friday;
+				return new DateTime(Year, (int) Month, Day).DayOfWeek == DayOfWeek.Friday;
 			}
 		}
 
 		public override string ToString()
 		{
-			return $"{Year}-{Month}-{Day}";
+			return $"{Year}-{(int) Month}-{Day}";
 		}
 	}
 }
