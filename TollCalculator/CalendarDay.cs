@@ -59,18 +59,21 @@ namespace TollCalculator
 			var ascension = easterDay;
 			ascension.Day += 39;
 
-			// ReSharper disable once ConvertIfStatementToSwitchStatement
-			if (ascension.Month == 3 && ascension.Day > 31)
+			// ReSharper disable once SwitchStatementMissingSomeCases
+			switch (ascension.Month)
 			{
-				ascension.Day -= 31;
-				ascension.Month = 4;
-			}
-
-			// ReSharper disable once InvertIf
-			if (ascension.Month == 4 && ascension.Day > 30)
-			{
-				ascension.Day -= 30;
-				ascension.Month = 5;
+				case 3 when ascension.Day > 31 + 30:
+					ascension.Day -= 31 + 30;
+					ascension.Month = 5;
+					return ascension;
+				case 3 when ascension.Day > 31:
+					ascension.Day -= 31;
+					ascension.Month = 4;
+					return ascension;
+				case 4 when ascension.Day > 30:
+					ascension.Day -= 30;
+					ascension.Month = 5;
+					return ascension;
 			}
 
 			return ascension;
