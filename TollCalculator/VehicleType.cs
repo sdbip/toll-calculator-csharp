@@ -1,5 +1,8 @@
-﻿namespace TollCalculator
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace TollCalculator
 {
+	[SuppressMessage("ReSharper", "UnusedMember.Global")]
 	public enum VehicleType
 	{
 		Motorbike = 0,

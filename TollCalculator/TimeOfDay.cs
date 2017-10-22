@@ -2,8 +2,8 @@
 {
 	public struct TimeOfDay
 	{
-		public int hour;
-		public int minute;
+		public int Hour;
+		public int Minute;
 
 		public int TollFee
 		{
@@ -18,22 +18,21 @@
 				if (IsBefore(new TimeOfDay(15, 30))) return 13;
 				if (IsBefore(new TimeOfDay(17, 0))) return 18;
 				if (IsBefore(new TimeOfDay(18, 0))) return 13;
-				if (IsBefore(new TimeOfDay(18, 30))) return 8;
-				return 0;
+				return IsBefore(new TimeOfDay(18, 30)) ? 8 : 0;
 			}
 		}
 
 		public TimeOfDay(int hour, int minute)
 		{
-			this.hour = hour;
-			this.minute = minute;
+			Hour = hour;
+			Minute = minute;
 		}
 
-		bool IsBefore(TimeOfDay otherTime)
+		private bool IsBefore(TimeOfDay otherTime)
 		{
-			if (otherTime.hour > hour) return true;
-			if (otherTime.hour < hour) return false;
-			return otherTime.minute > minute;
+			if (otherTime.Hour > Hour) return true;
+			if (otherTime.Hour < Hour) return false;
+			return otherTime.Minute > Minute;
 		}
 	}
 }
