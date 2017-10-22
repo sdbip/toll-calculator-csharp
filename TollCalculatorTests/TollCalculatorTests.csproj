@@ -31,14 +31,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Source\TollCalculator.cs" />
-    <Compile Include="Tests\TollCalculatorTests.cs" />
-    <Compile Include="Source\VehicleType.cs" />
-    <Compile Include="Source\TimeOfDay.cs" />
-    <Compile Include="Source\CalendarDay.cs" />
+    <Compile Include="TollCalculatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TollCalculator\TollCalculator.csproj">
+      <Project>{FA3B5AC8-C548-481A-BA30-F14296188D96}</Project>
+      <Name>TollCalculator</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
