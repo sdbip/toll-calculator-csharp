@@ -7,9 +7,8 @@ namespace TollCalculator
 		readonly CalendarDay day;
 		readonly VehicleType vehicle;
 
-		public int TotalFee => totalFee;
+		public int TotalFee { get; private set; }
 
-		int totalFee;
 		TimeOfDay? startOfTheHour;
 		int feeForThisHour;
 
@@ -30,18 +29,18 @@ namespace TollCalculator
 			if (time.hour - startOfTheHour.Value.hour == 0 ||
 				time.hour - startOfTheHour.Value.hour == 1 && time.minute < startOfTheHour.Value.minute)
 			{
-				totalFee -= feeForThisHour;
+				TotalFee -= feeForThisHour;
 				feeForThisHour = Math.Max(feeForThisHour, nextFee);
-				totalFee += feeForThisHour;
+				TotalFee += feeForThisHour;
 			}
 			else
 			{
-				totalFee += nextFee;
+				TotalFee += nextFee;
 				feeForThisHour = nextFee;
 				startOfTheHour = time;
 			}
 
-			if (totalFee > 60) totalFee = 60;
+			if (TotalFee > 60) TotalFee = 60;
 		}
 	}
 
