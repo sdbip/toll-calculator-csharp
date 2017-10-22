@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using TollCalculator;
 
 namespace TollCalculatorTests
 {
@@ -10,7 +11,7 @@ namespace TollCalculatorTests
 		public void NoFeeIfNoPasses()
 		{
 			var day = new CalendarDay { year = 2013, month = 1, day = 2 };
-			var calculator = new TollCalculator(day, VehicleType.Car);
+			var calculator = new TollCalculator.TollCalculator(day, VehicleType.Car);
 
 			Assert.AreEqual(0, calculator.TotalFee);
 		}
@@ -29,7 +30,7 @@ namespace TollCalculatorTests
 		public void SinglePassFee(int hour, int minute, int expectedFee)
 		{
 			var day = new CalendarDay { year = 2013, month = 1, day = 2 };
-			var calculator = new TollCalculator(day, VehicleType.Car);
+			var calculator = new TollCalculator.TollCalculator(day, VehicleType.Car);
 
 			calculator.PassToll(new TimeOfDay(hour, minute));
 
@@ -56,7 +57,7 @@ namespace TollCalculatorTests
 		public void TollFreeDates2013(int month, int day)
 		{
 			var calendarDay = new CalendarDay(2013, month, day);
-			var calculator = new TollCalculator(calendarDay, VehicleType.Car);
+			var calculator = new TollCalculator.TollCalculator(calendarDay, VehicleType.Car);
 
 			calculator.PassToll(new TimeOfDay { hour = 7, minute = 5 });
 
@@ -83,7 +84,7 @@ namespace TollCalculatorTests
 		public void TollFreeDates2017(int month, int day)
 		{
 			var calendarDay = new CalendarDay(2017, month, day);
-			var calculator = new TollCalculator(calendarDay, VehicleType.Car);
+			var calculator = new TollCalculator.TollCalculator(calendarDay, VehicleType.Car);
 
 			calculator.PassToll(new TimeOfDay { hour = 7, minute = 5 });
 
@@ -110,7 +111,7 @@ namespace TollCalculatorTests
 		public void TollFreeDates2021(int month, int day)
 		{
 			var calendarDay = new CalendarDay(2021, month, day);
-			var calculator = new TollCalculator(calendarDay, VehicleType.Car);
+			var calculator = new TollCalculator.TollCalculator(calendarDay, VehicleType.Car);
 
 			calculator.PassToll(new TimeOfDay { hour = 7, minute = 5 });
 
@@ -121,7 +122,7 @@ namespace TollCalculatorTests
 		public void TollFreeForMotorcycles()
 		{
 			var day = new CalendarDay { year = 2013, month = 1, day = 2 };
-			var calculator = new TollCalculator(day, VehicleType.Motorbike);
+			var calculator = new TollCalculator.TollCalculator(day, VehicleType.Motorbike);
 
 			calculator.PassToll(new TimeOfDay { hour = 7, minute = 5 });
 
@@ -132,7 +133,7 @@ namespace TollCalculatorTests
 		public void MultiplePassesInOneHourCostsTheHighestFeeOnly()
 		{
 			var day = new CalendarDay { year = 2013, month = 1, day = 2 };
-			var calculator = new TollCalculator(day, VehicleType.Car);
+			var calculator = new TollCalculator.TollCalculator(day, VehicleType.Car);
 
 			calculator.PassToll(new TimeOfDay { hour = 6, minute = 15 }); //  8 SEK
 			calculator.PassToll(new TimeOfDay { hour = 7, minute = 5 });  // 18 SEK
@@ -144,7 +145,7 @@ namespace TollCalculatorTests
 		public void NewPassAfterOneHourIsAddedToTheTotal()
 		{
 			var day = new CalendarDay { year = 2013, month = 1, day = 2 };
-			var calculator = new TollCalculator(day, VehicleType.Car);
+			var calculator = new TollCalculator.TollCalculator(day, VehicleType.Car);
 
 			calculator.PassToll(new TimeOfDay { hour = 6, minute = 15 }); //  8 SEK
 			calculator.PassToll(new TimeOfDay { hour = 15, minute = 5 }); // 13 SEK
@@ -157,7 +158,7 @@ namespace TollCalculatorTests
 		{
 			var day = new CalendarDay { year = 2013, month = 1, day = 2 };
 
-			var calculator = new TollCalculator(day, VehicleType.Car);
+			var calculator = new TollCalculator.TollCalculator(day, VehicleType.Car);
 			calculator.PassToll(new TimeOfDay { hour =  6, minute = 0 }); //  8 SEK
 			calculator.PassToll(new TimeOfDay { hour =  7, minute = 1 }); // 18 SEK
 			calculator.PassToll(new TimeOfDay { hour =  8, minute = 2 }); // 13 SEK

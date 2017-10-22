@@ -1,52 +1,55 @@
 ﻿using System;
 
-public class TollCalculator
+namespace TollCalculator
 {
-	readonly CalendarDay day;
-	readonly VehicleType vehicle;
-
-	public int TotalFee => totalFee;
-
-	int totalFee;
-	TimeOfDay? startOfTheHour;
-	int feeForThisHour;
-
-	public TollCalculator(CalendarDay day, VehicleType vehicle)
+	public class TollCalculator
 	{
-		this.day = day;
-		this.vehicle = vehicle;
-	}
+		readonly CalendarDay day;
+		readonly VehicleType vehicle;
 
-	public void PassToll(TimeOfDay time)
-	{
-		if (vehicle.IsTollFree()) return;
-		if (day.IsTollFree) return;
+		public int TotalFee => totalFee;
 
-		int nextFee = time.TollFee;
-		if (startOfTheHour == null) startOfTheHour = time;
+		int totalFee;
+		TimeOfDay? startOfTheHour;
+		int feeForThisHour;
 
-		if (time.hour - startOfTheHour.Value.hour == 0 ||
-			time.hour - startOfTheHour.Value.hour == 1 && time.minute < startOfTheHour.Value.minute)
+		public TollCalculator(CalendarDay day, VehicleType vehicle)
 		{
-			totalFee -= feeForThisHour;
-			feeForThisHour = Math.Max(feeForThisHour, nextFee);
-			totalFee += feeForThisHour;
-		}
-		else
-		{
-			totalFee += nextFee;
-			feeForThisHour = nextFee;
-			startOfTheHour = time;
+			this.day = day;
+			this.vehicle = vehicle;
 		}
 
-		if (totalFee > 60) totalFee = 60;
-	}
-}
+		public void PassToll(TimeOfDay time)
+		{
+			if (vehicle.IsTollFree()) return;
+			if (day.IsTollFree) return;
 
-static class VehicleTypeExtension
-{
-	public static bool IsTollFree(this VehicleType self)
+			int nextFee = time.TollFee;
+			if (startOfTheHour == null) startOfTheHour = time;
+
+			if (time.hour - startOfTheHour.Value.hour == 0 ||
+				time.hour - startOfTheHour.Value.hour == 1 && time.minute < startOfTheHour.Value.minute)
+			{
+				totalFee -= feeForThisHour;
+				feeForThisHour = Math.Max(feeForThisHour, nextFee);
+				totalFee += feeForThisHour;
+			}
+			else
+			{
+				totalFee += nextFee;
+				feeForThisHour = nextFee;
+				startOfTheHour = time;
+			}
+
+			if (totalFee > 60) totalFee = 60;
+		}
+	}
+
+	static class VehicleTypeExtension
 	{
-		return self != VehicleType.Car;
+		public static bool IsTollFree(this VehicleType self)
+		{
+			return self != VehicleType.Car;
+		}
 	}
 }
